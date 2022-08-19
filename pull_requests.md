@@ -1,3 +1,3 @@
 - Bruce Tate
-- your name
+- Alex Giraldo
 - ...
