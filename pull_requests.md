@@ -1,4 +1,5 @@
 - Bruce Tate
 - Alex Giraldo
 - Steve Foley
+- Nico Gaviria
 - ...
