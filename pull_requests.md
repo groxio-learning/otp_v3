@@ -2,4 +2,5 @@
 - Alex Giraldo
 - Steve Foley
 - Nico Gaviria
+- Terrence Tuy
 - ...
