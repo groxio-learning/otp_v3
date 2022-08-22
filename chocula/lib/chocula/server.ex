@@ -22,4 +22,20 @@ defmodule Chocula.Server do
     {:noreply, Counter.accumulate(state, -1)}
   end
 
+  def start_link(name) do
+    GenServer.start_link(__MODULE__, "42", name: name)
+  end
+
+  def increment(counter \\ :counter) do
+    GenServer.cast(counter, :increment)
+  end
+
+  def decrement(counter \\ :counter) do
+    GenServer.cast(counter, :decrement)
+  end
+
+  def display(counter \\ :counter) do
+    GenServer.call(counter, :display)
+  end
+
 end
