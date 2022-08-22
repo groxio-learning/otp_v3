@@ -10,6 +10,8 @@ defmodule Chocula.Application do
     children = [
       # Starts a worker by calling: Chocula.Worker.start_link(arg)
       # {Chocula.Worker, arg}
+      %{id: :server1, start: {Chocula.Server, :start_link, [:server1, "84"]}},
+      %{id: :server2, start: {Chocula.Server, :start_link, [:server2, "21"]}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
