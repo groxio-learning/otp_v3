@@ -5,7 +5,7 @@ defmodule Spies.Score do
 
   def increment_red(accumulator, guess_value) do
     {_, new_accumulator} =
-      Map.get_and_update(accumulator, :red, fn value -> {value, value + 1} end)
+      Map.get_and_update(accumulator, :red,  &({&1, &1 + 1}))
 
     {_, new_accumulator} =
       Map.get_and_update(new_accumulator, :red_colors, fn red_color_list ->
@@ -35,8 +35,7 @@ defmodule Spies.Score do
 
   def find_whites(acc, answer, guess) do
     guess
-    |> Enum.with_index()
-    |> Enum.reduce(acc, fn {guess_item, index}, result_acc ->
+    |> Enum.reduce(acc, fn guess_item, result_acc ->
       cond do
         Enum.member?(answer, guess_item) and
             not Enum.member?(Map.get(acc, :red_colors), guess_item) ->
