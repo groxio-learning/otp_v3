@@ -1,5 +1,4 @@
 defmodule Spies.Score do
-  # TODO Handle multiple colors in the same guess better
   def accumulator() do
     %{red: 0, white: 0, red_colors: []}
   end
