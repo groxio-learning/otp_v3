@@ -1,25 +1,20 @@
-defmodule Spies.Core.History do
+defmodule Spies.Core.Game do
   defstruct [answer: [1,2,3,4], guesses: [], status: :playing]
 
   alias Spies.Score
 
   @n_turns 10
 
-  @spec new({} | {:random} | {:repeat, :random}, any) :: %Spies.Core.History{
-          answer: any,
-          guesses: []
-        }
-  def new(opts, size \\ 4)
-  def new({:repeat, :random}, size) do
-    %__MODULE__{answer: generate_random_list_with_repeats(size)}
-  end
-
-  def new({:random}, size) do
-    %__MODULE__{answer: generate_random_list_no_repeats(size)}
-  end
-
-  def new({}, answer) do
+  def new(%{answer: answer}) do
     %__MODULE__{answer: answer}
+  end
+
+  def new(args = %{repeat: true, random: true}) do
+    %__MODULE__{answer: generate_random_list_with_repeats(Map.get(args, :size, 4))}
+  end
+
+  def new(args) do
+    %__MODULE__{answer: generate_random_list_no_repeats(Map.get(args, :size, 4))}
   end
 
   defp generate_random_list_no_repeats(size) do
@@ -68,6 +63,7 @@ defmodule Spies.Core.History do
   defp show_answer(%{status: :playing} = game) do
     String.duplicate("? ", length(game.answer))
   end
+
   defp show_answer(game) do
     inspect(game.answer)
   end
