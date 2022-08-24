@@ -1,18 +1,10 @@
 defmodule Spies do
-  @moduledoc """
-  Documentation for `Spies`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Spies.hello()
-      :world
-
-  """
-  def hello do
-    :world
+  def new_game(name) do
+    DynamicSupervisor.start_child(:sup, {Spies.Server, name})
   end
+
+  def guess(name, guess) do
+    Spies.Server.guess(name, guess)
+  end
+
 end

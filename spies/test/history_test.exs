@@ -1,11 +1,11 @@
-defmodule HistoryTest do
+defmodule GameTest do
   use ExUnit.Case
-  alias Spies.Core.History
+  alias Spies.Core.Game
 
-  doctest History
+  doctest Game
 
   test "random new test" do
-    result = History.new({:random})
+    result = Game.new(%{random: true})
 
     assert Map.has_key?(result, :guesses)
     assert Map.has_key?(result, :answer)
@@ -14,7 +14,7 @@ defmodule HistoryTest do
   end
 
   test "random new test with size" do
-    result = History.new({:random}, 6)
+    result = Game.new(%{random: true, size: 6})
 
     assert Map.has_key?(result, :guesses)
     assert Map.has_key?(result, :answer)
@@ -23,7 +23,7 @@ defmodule HistoryTest do
   end
 
   test "random new test with size and repeats" do
-    result = History.new({:repeat, :random}, 6)
+    result = Game.new(%{repeat: true, random: true, size: 6})
 
     assert Map.has_key?(result, :guesses)
     assert Map.has_key?(result, :answer)
@@ -32,7 +32,7 @@ defmodule HistoryTest do
   end
 
   test "random new test with repeats" do
-    result = History.new({:repeat, :random})
+    result = Game.new(%{repeat: true, random: true})
 
     assert Map.has_key?(result, :guesses)
     assert Map.has_key?(result, :answer)
@@ -41,7 +41,7 @@ defmodule HistoryTest do
   end
 
   test "provided new test" do
-    result = History.new({}, [1,2,3,4])
+    result = Game.new(%{answer: [1,2,3,4]})
 
     assert Map.has_key?(result, :guesses)
     assert Map.has_key?(result, :answer)
@@ -51,7 +51,7 @@ defmodule HistoryTest do
   end
 
   test "provided new test different size" do
-    result = History.new({}, [1,2,3,4,5,6])
+    result = Game.new(%{answer: [1,2,3,4,5,6]})
 
     assert Map.has_key?(result, :guesses)
     assert Map.has_key?(result, :answer)
@@ -62,8 +62,8 @@ defmodule HistoryTest do
 
   test "guess" do
     state =
-      History.new({}, [1,2,3,4])
-      |> History.guess([3,2,1,4])
+      Game.new(%{answer: [1,2,3,4]})
+      |> Game.guess([3,2,1,4])
 
     assert Map.has_key?(state, :guesses)
     assert Map.has_key?(state, :answer)
@@ -74,9 +74,9 @@ defmodule HistoryTest do
 
   test "two guesses" do
     state =
-      History.new({}, [1,2,3,4])
-      |> History.guess([3,2,1,4])
-      |> History.guess([4,3,2,1])
+      Game.new(%{answer: [1,2,3,4]})
+      |> Game.guess([3,2,1,4])
+      |> Game.guess([4,3,2,1])
 
     assert Map.has_key?(state, :guesses)
     assert Map.has_key?(state, :answer)
