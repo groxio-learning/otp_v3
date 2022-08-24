@@ -32,21 +32,43 @@ defmodule Spies.Core.History do
   end
 
   def guess(game, current_guess) do
-    %{game | guesses: [current_guess | game.guesses], status: get_status(game, current_guess)}
+    next_game = %{game | guesses: [current_guess | game.guesses]}
+    %{next_game | status: get_status(game)}
   end
 
-  defp get_status(game, current_guess) when current_guess == game.answer do
+  defp get_status(%{answer: answer, guesses: [answer | _guesses]}) do
     :winner
   end
-  defp get_status(game, _) when length(game.guesses) + 1 == @n_turns do
+  defp get_status(game) when length(game.guesses) == @n_turns do
     :loser
   end
-  defp get_status(_, _) do
+  defp get_status(_game) do
     :playing
   end
 
-  def converter(%{guesses: [current_guess | _], answer: answer}) do
-    Score.check(answer, current_guess)
+  def show(game) do
+    """
+    #{show_answer(game)}
+
+    #{rows(game)}
+    #{get_status(game)}
+    """
   end
 
+  defp rows(game) do
+    game.guesses
+    |> Enum.map(&row(game.answer, &1))
+    |> Enum.join("\n")
+  end
+
+  defp row(answer, guess) do
+    "#{inspect(guess)} | #{Score.check(answer, guess)}"
+  end
+
+  defp show_answer(%{status: :playing} = game) do
+    String.duplicate("? ", length(game.answer))
+  end
+  defp show_answer(game) do
+    inspect(game.answer)
+  end
 end
